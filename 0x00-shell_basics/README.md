@@ -1,2 +1,2 @@
-the repository is all about shell basics
-
+This script is designed to display the current working directory when executed
+It provides a simple and convenient way to quickly view the directory in which the script is being run
