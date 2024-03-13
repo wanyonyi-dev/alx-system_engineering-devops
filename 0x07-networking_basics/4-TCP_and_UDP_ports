@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# Displays litening ports and sockets
+# + as the PID and name of the program to which ech socket belongs
+
+netstat -l --program
