@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# script that connec to my server using my private address
+ssh -i ~/.ssh/school ubuntu@52.204.50.192
