@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# a script that installs HAProxy server and configures it
+
+#!/usr/bin/env bash
+# a script that installs HAProxy server and configures it
+# The script also ensures that the script can be managed through an init file
+
+sudo apt-get -y update
+sudo apt-get -y upgrade
+sudo apt-get -y install haproxy
+
+sudo chown -R ubuntu /etc/haproxy
+
+confg="\
+frontend http
+	bind *:80
+	mode http
+	default_backend web-server
+backend web-server
+	balance roundrobin
+	server 425888-web-01 52.204.50.192 check
+	server425888-web-02 100.26.244.35  check
+"
+
+sudo echo "$confg" >>/etc/haproxy/haproxy.cfg
+sudo service haproxy restart
