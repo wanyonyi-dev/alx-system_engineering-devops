@@ -1,14 +1,23 @@
 #!/usr/bin/env bash
-# Bash script that will display information about subdomains.
+# Displays informtation about subdomains.
+subdomains=( "www" "lb-01" "web-01" "web-02" )
+domain="$1"
+sub="$2"
 
-sub_domain() {
-	declare -a subdomains=("www" "lb-01" "web-01" "web-02")
-	#? Validate if exist subdomain.
-	for sub in "${subdomains[@]}"; do
-		if [ "${2}" == "${sub}" ] || [ -z "${2}" ]; then
-			dig "$sub.$1" | grep -A1 'ANSWER SECTION:' | paste - - | awk -v var="${sub}" '{print "The subdomain " var " is a " $7 " record and points to " $8}'
-		fi
-	done
+dig_cmd () {
+	# func variables
+	sub="$2"
+	INFO="$(dig "$sub.$domain" | grep -A1 'ANSWER SECTION:' | awk 'NR==2')"
+	IP=$(echo "$INFO" | awk '{print $5}')
+	RECORD=$(echo "$INFO" | awk '{print $4}')
+
+	echo -e "${brown}The subdomain ${blue}$sub${brown} is a ${blue}$RECORD${brown} record and points to ${blue}$IP${reset}"
 }
 
-sub_domain "$1" "$2"
+if [ $# -eq 1 ]; then
+	for subs in "${subdomains[@]}"; do
+		dig_cmd "$domain" "$subs"
+	done
+elif [ $# -eq 2 ]; then
+	dig_cmd "$domain" "$sub"
+fi
